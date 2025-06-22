@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# Database files
+*.sqlite3
+
+# Pytest cache
+.pytest_cache/
+
+# Docker
+*.dockerignore
+docker-compose.override.yml
+
+# Alembic
+alembic/versions/*.pyc
+alembic/versions/__pycache__/
+
+# Encodings, saved images, uploads
+encodings.pkl
+violations/
+employee_faces/
+
+# Others
+.DS_Store
