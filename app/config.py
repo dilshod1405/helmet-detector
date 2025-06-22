@@ -1,11 +1,14 @@
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
-# 4 ta RTSP URL lar
+load_dotenv()
+
 CAMERA_URLS = [
-    "rtsp://admin:a12345678A@93.188.83.34/Streaming/Channels/101/",
+    os.getenv("CAMERA_1_URL"),
 ]
 
-YOLO_MODEL_PATH = "helmet-detection.pt"
+YOLO_MODEL_PATH = "yolov8n.pt"
 
 VIOLATION_DIR = Path("violations")
 VIOLATION_DIR.mkdir(exist_ok=True)

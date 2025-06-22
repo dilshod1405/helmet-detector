@@ -1,5 +1,5 @@
 import cv2
-from app.config import RTSP_URL
+from app.config import CAMERA_URLS
 from app.detection.helmet import detect_person_and_helmet
 
 def draw_boxes(frame, person_helmet_status):
@@ -10,36 +10,44 @@ def draw_boxes(frame, person_helmet_status):
         cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
         cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2)
 
+
 def test_helmet_detection():
-    cap = cv2.VideoCapture(RTSP_URL)
-    if not cap.isOpened():
-        print("❌ Kamera ochilmadi.")
+    caps = []
+    for i, url in enumerate(CAMERA_URLS):
+        cap = cv2.VideoCapture(url)
+        if not cap.isOpened():
+            print(f"❌ Kamera ochilmadi: {url}")
+        else:
+            print(f"✅ Kamera {i+1} stream boshlandi.")
+            caps.append((f"Camera {i+1}", cap))
+
+    if not caps:
+        print("⚠️ Hech bir kamera ulanmagan.")
         return
 
-    print("✅ Kamera stream boshlandi. Kaskani aniqlash test ishlamoqda...")
-
     while True:
-        ret, frame = cap.read()
-        if not ret:
-            print("❌ Frame o‘qib bo‘lmadi.")
-            break
+        for name, cap in caps:
+            ret, frame = cap.read()
+            if not ret:
+                print(f"❌ Frame o‘qib bo‘lmadi: {name}")
+                continue
 
-        results, person_helmet_status = detect_person_and_helmet(frame)
+            results, person_helmet_status = detect_person_and_helmet(frame)
 
-        if len(person_helmet_status) == 0:
-            label = "Hech kim yo'q"
-            cv2.putText(frame, label, (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        else:
-            draw_boxes(frame, person_helmet_status)
+            if not person_helmet_status:
+                cv2.putText(frame, "Hech kim yo'q", (30, 30),
+                            cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            else:
+                draw_boxes(frame, person_helmet_status)
 
-        cv2.imshow("Helmet Detection", frame)
+            cv2.imshow(name, frame)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-    cap.release()
+    for _, cap in caps:
+        cap.release()
     cv2.destroyAllWindows()
-
 
 
 if __name__ == "__main__":

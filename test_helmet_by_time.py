@@ -1,6 +1,6 @@
 import datetime
 import cv2
-from app.config import RTSP_URL
+from app.config import CAMERA_URLS
 from app.detection.helmet import detect_person_and_helmet
 
 def is_work_time():
@@ -16,7 +16,7 @@ def test_helmet_detection():
         if is_work_time():
             if cap is None or not cap.isOpened():
                 print("✅ Ish vaqti boshlandi, kamera stream ochilmoqda...")
-                cap = cv2.VideoCapture(RTSP_URL)
+                cap = cv2.VideoCapture(CAMERA_URLS[0])  # Faqat bitta kamera ishlatilmoqda
                 if not cap.isOpened():
                     print("❌ Kamera ochilmadi.")
                     cap = None

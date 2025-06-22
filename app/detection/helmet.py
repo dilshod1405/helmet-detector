@@ -6,14 +6,6 @@ model = YOLO(YOLO_MODEL_PATH)
 names = model.names  # better than results.names
 
 def detect_person_and_helmet(frame):
-    """
-    Frame ichidagi odamlarni va kaskalarni aniqlaydi.
-    Har bir odam uchun kaska borligini qaytaradi.
-    
-    Returns:
-        results: YOLO inferensiya natijasi (for visualization)
-        person_helmet_status: list of tuples [(box, helmet_bool), ...]
-    """
     results = model.predict(frame, verbose=False)[0]
 
     person_boxes = []
@@ -24,18 +16,17 @@ def detect_person_and_helmet(frame):
         label = names[cls_id].lower()
         if label == 'person':
             person_boxes.append(box)
-        elif label == 'helmet':
+        elif label in ['helmet', 'hardhat', 'safety_helmet']:
             helmet_boxes.append(box)
 
     person_helmet_status = []
     for pbox in person_boxes:
-        px1, py1, px2, py2 = pbox.xyxy.cpu().numpy()[0]
+        px1, py1, px2, py2 = pbox.xyxy.cpu().numpy()[0].astype(int)
 
         helmet_found = False
         for hbox in helmet_boxes:
-            hx1, hy1, hx2, hy2 = hbox.xyxy.cpu().numpy()[0]
+            hx1, hy1, hx2, hy2 = hbox.xyxy.cpu().numpy()[0].astype(int)
 
-            # helmet markazining person bbox ichida ekanini tekshiramiz
             hx_center = (hx1 + hx2) / 2
             hy_center = (hy1 + hy2) / 2
 
