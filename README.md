@@ -116,6 +116,7 @@ helmet_detector/
 │   ├── detection/          # Helmet and face detection modules
 │   ├── databases/          # DB models, schemas, CRUD
 │   ├── camera/             # Camera capture and violation image saving
+│   ├── utils/              # Encoding
 │   ├── main.py             # FastAPI app and camera streaming threads
 │   └── config.py           # Configuration variables
 ├── violations/             # Saved violation images
@@ -124,6 +125,7 @@ helmet_detector/
 ├── docker-compose.yml
 ├── alembic/                # Alembic migration scripts
 ├── requirements.txt
+├── yolov8n.pt              # AI powered and trained model
 └── README.md
 ```
 
