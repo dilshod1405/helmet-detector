@@ -1,6 +1,6 @@
 # Helmet Detector
 
-![Project Logo](./docs/logo.png) <!-- Optional -->
+![Project Logo](https://i.postimg.cc/j53sHDSc/cam1.png) <!-- Optional -->
 
 ---
 
