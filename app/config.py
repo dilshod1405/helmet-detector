@@ -1,12 +1,9 @@
 from pathlib import Path
-from dotenv import load_dotenv
-import os
+from decouple import config
 
-load_dotenv()
 
-CAMERA_URLS = [
-    os.getenv("CAMERA_1_URL"),
-]
+CAMERA_URLS = config("CAMERA_URLS", default="").split(",")
+
 
 YOLO_MODEL_PATH = "yolov8n.pt"
 
