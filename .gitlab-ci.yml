@@ -1,0 +1,57 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "" # TLS sertifikatlari bilan bog'liq muammolarni oldini olish uchun
+  # Tasvir nomi: loyiha yo'li + tasvir nomi + tag (masalan, registry.gitlab.com/your-group/your-project/helmet-detector:latest)
+  IMAGE_NAME: $CI_REGISTRY_IMAGE/helmet-detector:$CI_COMMIT_REF_SLUG # CI_REGISTRY_IMAGE avtomatik belgilanadi
+
+stages:
+  - build     # Docker tasvirini yaratish
+  - test      # Loyihani test qilish
+  - deploy    # Serverga joylashtirish (qo'lda)
+
+build_docker_image:
+  stage: build
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $IMAGE_NAME .
+    - docker push $IMAGE_NAME # Tasvirni registry'ga yuklash
+  only:
+    - main # Faqat 'main' branchiga o'zgarishlar kiritilganda ishga tushirish
+  tags:
+    - docker # Agar sizning GitLab Runner'ingizda maxsus taglar bo'lsa
+
+run_tests:
+  stage: test
+  image: python:3.10-slim-bullseye # Testlarni ishga tushirish uchun Python tasviri
+  script:
+    - apt-get update && apt-get install -y build-essential cmake libgl1-mesa-glx libsm6 libxext6 ffmpeg --no-install-recommends && rm -rf /var/lib/apt/lists/*
+    - pip install --upgrade pip
+    - pip install --no-cache-dir -r requirements.txt
+    - pip install pytest # Testlarni ishga tushirish uchun pytest o'rnatish
+    - python -m pytest tests/ # 'tests/' papkasidagi testlarni ishga tushirish
+    # Qo'shimcha test buyruqlari bu yerga qo'shilishi mumkin (masalan, linter, kod sifati tekshiruvi)
+  only:
+    - main
+  # Bu bosqich build_docker_image bosqichidan keyin ishga tushadi.
+  # Agar build bosqichi muvaffaqiyatli bo'lmasa, bu bosqich ishga tushmaydi.
+
+deploy_to_server:
+  stage: deploy
+  script:
+    - echo "Docker tasviri muvaffaqiyatli yaratildi va testlardan o'tdi: $IMAGE_NAME"
+    - echo "Serverga joylashtirish uchun qo'lda tasdiqlashni kuting."
+    # Bu yerga SSH orqali serverga ulanish va konteynerni ishga tushirish buyruqlari qo'shilishi mumkin.
+    # Masalan:
+    # - apt-get update && apt-get install -y openssh-client sshpass # sshpass ni o'rnatish
+    # - sshpass -p $SSH_PASSWORD ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "docker pull $IMAGE_NAME && docker stop my-helmet-detector || true && docker rm my-helmet-detector || true && docker run -d --restart always --name my-helmet-detector -p 8000:8000 $IMAGE_NAME"
+  only:
+    - main
+  tags:
+    - your-deploy-runner-tag # Agar deploy uchun alohida runner bo'lsa
+  when: manual # Bu bosqichni qo'lda ishga tushirish uchun
+  needs: ["run_tests"] # Bu bosqich faqat 'run_tests' bosqichi muvaffaqiyatli tugagandan so'ng ishga tushishi mumkin

@@ -1,0 +1,42 @@
+# .gitignore-github
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Environment variables
+.env
+
+# Camera configuration file (runtime generated/modified, sensitive info)
+cameras.json
+
+# Machine Learning Models (Katta hajmli va portfolio uchun kerak emas)
+models/
+
+# Data directory (detected incidents, employee photos - katta hajmli va generatsiya qilingan)
+data/
+
+# Python specific
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.Python
+build/
+dist/
+
+# IDE specific
+.vscode/
+.idea/
+*.iml
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak

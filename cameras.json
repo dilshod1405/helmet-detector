@@ -1,0 +1,27 @@
+[
+  {
+    "camera_id": "1-kamera",
+    "rtsp_url": "rtsp://admin:Z11223344.@93.188.83.34:6001",
+    "is_active": true
+  },
+  {
+    "camera_id": "2-kamera",
+    "rtsp_url": "rtsp://admin:Z11223344.@93.188.83.34:6002",
+    "is_active": true
+  },
+  {
+    "camera_id": "3-kamera",
+    "rtsp_url": "rtsp://admin:Z11223344@93.188.83.34:6003",
+    "is_active": true
+  },
+  {
+    "camera_id": "4-kamera",
+    "rtsp_url": "rtsp://admin:Z11223344.@93.188.83.34:6004",
+    "is_active": true
+  },
+  {
+    "camera_id": "5-kamera",
+    "rtsp_url": "rtsp://admin:Z11223344@93.188.83.34:6005",
+    "is_active": true
+  }
+]
