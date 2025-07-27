@@ -215,7 +215,7 @@ sudo apt install docker.io docker-compose ffmpeg python3.12 python3.12-venv git 
     - [https://developer.nvidia.com/cudnn](https://developer.nvidia.com/cudnn)
 
 
-3. Configure .bashrc
+3. Configure `.bashrc`:
 
 ```bash
 
