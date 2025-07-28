@@ -245,7 +245,7 @@ sudo systemctl restart docker
 
 ```bash
 
-git clone https://github.com/dilshod1405/helmet-detector.git helmet_detector
+git clone https://github.com/dilshod1405/helmet-detector.git
 cd helmet_detector
 
 ```
@@ -254,16 +254,10 @@ Update  `.env` file:
 
 ```env
 
-DB_HOST=<DB_VM_IP_ADDRESS>
-DB_PORT=5432
-DB_USER=user
-DB_PASSWORD=password
-DB_NAME=helmet_db
+DATABASE_URL=postgresql://yourusername:password@host:port/database_name
 EXTERNAL_API_URL=http://api-vchd-7.uz/api/w-list
 EXTERNAL_API_TOKEN=your_api_token
 FORCE_CPU_FOR_TF=False
-YOLO_MODEL_PATH=models/yolov8n.pt
-IMAGE_SAVE_PATH=data/detected_incidents
 
 ```
 
