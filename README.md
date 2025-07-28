@@ -255,7 +255,7 @@ Update  `.env` file:
 ```env
 
 DATABASE_URL=postgresql://yourusername:password@host:port/database_name
-EXTERNAL_API_URL=http://api-vchd-7.uz/api/w-list
+EXTERNAL_API_URL=your_api_url # if you have employee data
 EXTERNAL_API_TOKEN=your_api_token
 FORCE_CPU_FOR_TF=False
 
